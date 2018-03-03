@@ -18,7 +18,6 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/login' do
-    binding.pry
     redirect to '/users/login'
   end
 
@@ -31,5 +30,6 @@ class ApplicationController < Sinatra::Base
     def login(user)
       session[:user_id] = user.id
     end
+
   end
 end

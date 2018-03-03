@@ -1,10 +1,16 @@
 class UserController < ApplicationController
 
   get '/users/login' do
+    if logged_in?
+      redirect to '/users/show'
+    end
     erb :'/users/login'
   end
 
   get '/users/signup' do
+    if logged_in?
+      redirect to '/users/show'
+    end
     erb :'/users/signup'
   end
 
@@ -13,16 +19,13 @@ class UserController < ApplicationController
   end
 
   post '/users/login' do
-
-    binding.pry
+    @user = User.find_by(username: params[:username])
+    if @user && @user.authenticate(params[:password])
   end
 
   post '/users/signup' do
-    binding.pry
-    if !logged_in?
-      @user = user.create(params)
-      login(@user)
-    end
+    @user = user.create(params)
+    login(@user)
     redirect to "/users/show"
   end
 
