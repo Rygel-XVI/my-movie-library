@@ -8,12 +8,21 @@ class OwnerController < ApplicationController
     erb :'/owners/signup'
   end
 
+  get '/owners/show' do
+    erb :'owners/show'
+  end
+
   post '/owners/login' do
+
     binding.pry
   end
 
   post '/owners/signup' do
-    binding.pry
+    if !logged_in?
+      @owner = Owner.create(params)
+      login(@owner)
+    end
+    redirect to "/owners/show"
   end
 
 end
