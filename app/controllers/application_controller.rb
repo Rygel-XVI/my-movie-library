@@ -12,4 +12,13 @@ class ApplicationController < Sinatra::Base
   get '/' do
     erb :index
   end
+
+  get '/signup' do
+    redirect to '/owners/signup'
+  end
+
+  get '/login' do
+    binding.pry
+    redirect to 'owners/login'
+  end
 end
