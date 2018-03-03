@@ -14,11 +14,22 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/signup' do
-    redirect to '/owners/signup'
+    redirect to '/users/signup'
   end
 
   get '/login' do
     binding.pry
-    redirect to 'owners/login'
+    redirect to '/users/login'
+  end
+
+  helpers do
+
+    def logged_in?
+      !!session[:user_id]
+    end
+
+    def login(user)
+      session[:user_id] = user.id
+    end
   end
 end

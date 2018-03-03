@@ -7,5 +7,5 @@ end
 use Rack::MethodOverride
 use GenreController
 use MovieController
-use OwnerController
+use UserController
 run ApplicationController
