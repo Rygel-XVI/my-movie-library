@@ -1,0 +1,12 @@
+<h2>Hello <%=@user.name%></h2>
+
+<p>Movie List</p>
+<ul>
+<%=@user.movies.each do |movie|%>
+<li>
+  <%=movie.name%>
+</li>
+<%end%>
+</ul>
+
+Maybe add sort by genre or sort by string
