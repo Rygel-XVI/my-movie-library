@@ -45,6 +45,7 @@ class UserController < ApplicationController
   post '/users/login' do
     @user = User.find_by(name: params[:name])
     if @user && @user.authenticate(params[:password])
+      binding.pry
       login(@user)
       redirect to "/users/#{@user.slug}"
     else
@@ -64,6 +65,7 @@ class UserController < ApplicationController
 
   patch '/users/:slug/edit' do
     if !params[:email].empty? || !params[:password].empty?
+      #add flash messages
       @user = User.find_by_slug(params[:slug])
       @user.update(email: params[:email]) if !params[:email].empty?
       @user.update(password: params[:password]) if !params[:password].empty?
@@ -72,7 +74,11 @@ class UserController < ApplicationController
   end
 
   delete '/users/:slug/delete' do
-    if logged_in? && same_user?
+    binding.pry
+    @user = User.find_by_slug(params[:slug])
+    if logged_in? && same_user?(@user)
+      #add a success flash message
+      @user.destroy
       session.clear
     end
       redirect to '/'
