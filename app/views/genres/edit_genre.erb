@@ -1,0 +1,11 @@
+Genre edit form
+<form method='post' action='/genres/<%=@genre.slug%>/edit'>
+<input type='hidden' name='_method' value='patch'>
+
+<label for='name'>Genre Name</label>
+<input type='text' name='name' id='name'>
+
+<input type='submit' value='Edit Genre'>
+</form>
+
+add checkboxes for movies to associate with

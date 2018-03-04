@@ -3,7 +3,7 @@ class UserController < ApplicationController
   get '/users/login' do
     if logged_in?
       @user = get_user_by_session
-      redirect to "/users/#{@user.id}"
+      redirect to "/users/#{@user.slug}"
     else
       erb :'/users/login'
     end
@@ -27,9 +27,14 @@ class UserController < ApplicationController
     end
   end
 
-  get '/users/:slug' do
-    # @user = get_user_by_session
+  get '/users/:slug/edit' do
     @user = User.find_by_slug(params[:slug])
+    erb :'/users/edit'
+  end
+
+  get '/users/:slug' do
+    @user = User.find_by_slug(params[:slug])
+    binding.pry
     erb :'/users/show'
   end
 
@@ -53,7 +58,16 @@ class UserController < ApplicationController
     end
   end
 
+  patch '/users/:slug/edit' do
+    if !params[:email].empty? || !params[:password].empty?
+      @user = User.find_by_slug(params[:slug])
+      @user.update(email: params[:email]) if !params[:email].empty?
+      @user.update(password: params[:password]) if !params[:password].empty?
+    end
+    redirect to "/users/#{@user.slug}"
+  end
 
-  ##add patch and delete options for User
+
+  ##add delete options for User
 
 end

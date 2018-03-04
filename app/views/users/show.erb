@@ -1,6 +1,6 @@
 <h2>Hello <%=@user.name%></h2>
 
-<p><a href='/users/logout'>Logout</a></p>
+<p><a href='/users/<%=@user.slug%>/edit'>Edit Profile</a></p>
 
 <p>Movie List</p>
 
@@ -17,3 +17,5 @@
 <p>
 Maybe add sort by genre or sort by string
 </p>
+
+<p><a href='/users/logout'>Logout</a></p>
