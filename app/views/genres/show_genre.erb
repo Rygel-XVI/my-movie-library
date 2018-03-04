@@ -1,3 +1,9 @@
 Genre show form
 
 for the genre show all movies associated with it
+
+<% @genre.movies.each do |movie| %>
+
+  <%=movie.name%>
+
+<% end %>

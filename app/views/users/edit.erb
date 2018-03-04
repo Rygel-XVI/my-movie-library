@@ -3,7 +3,7 @@
 
 <form method='post' action='/users/<%=@user.slug%>/edit'>
   <input type='hidden' name='_method' value='patch'>
-  
+
   <label for='email'>New Email</label>
   <input type='text' name='email' value='email'>
   <br></br>
@@ -12,3 +12,5 @@
   <br></br>
   <input type='submit' value='Update'>
 </form>
+
+<a href='/users/<%=@user.slug%>/delete'>Delete Account</a>

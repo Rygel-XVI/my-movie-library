@@ -1,1 +1,5 @@
 show welcome to genres and list all genres associated with user if logged in
+
+<% Genre.all do each |genre| %>
+  <a href='/genres/<%=genre.name.slug%>'><%=genre.name%></a>
+<% end %>

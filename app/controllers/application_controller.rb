@@ -35,5 +35,9 @@ class ApplicationController < Sinatra::Base
       User.find(session[:user_id])
     end
 
+    def same_user?(user)
+      get_user_by_session == user.id
+    end
+
   end
 end

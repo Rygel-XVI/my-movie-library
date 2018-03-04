@@ -1,0 +1,10 @@
+<h3>Enter password to confirm deleting the account. This is irreversible.</h3>
+
+<form method='post' action='/users/<%=@user.slug%>/delete'>
+<input type='hidden' name='_method' value='delete'>
+
+<label for='password'>Password</label>
+<input type='text' name='password' id='password'>
+
+<input type='submit' value='Delete Account'>
+</form>

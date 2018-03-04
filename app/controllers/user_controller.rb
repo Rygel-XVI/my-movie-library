@@ -32,9 +32,13 @@ class UserController < ApplicationController
     erb :'/users/edit'
   end
 
+  get '/users/:slug/delete' do
+    @user = User.find_by_slug(params[:slug])
+    erb :'/users/delete'
+  end
+
   get '/users/:slug' do
     @user = User.find_by_slug(params[:slug])
-    binding.pry
     erb :'/users/show'
   end
 
@@ -67,7 +71,11 @@ class UserController < ApplicationController
     redirect to "/users/#{@user.slug}"
   end
 
-
-  ##add delete options for User
+  delete '/users/:slug/delete' do
+    if logged_in? && same_user?
+      session.clear
+    end
+      redirect to '/'
+  end
 
 end
