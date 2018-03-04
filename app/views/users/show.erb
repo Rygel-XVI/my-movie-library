@@ -1,12 +1,19 @@
 <h2>Hello <%=@user.name%></h2>
 
+<p><a href='/users/logout'>Logout</a></p>
+
 <p>Movie List</p>
+
+<p>Add a contingency if movies.length == 0 to put a message</p>
+
 <ul>
-<%=@user.movies.each do |movie|%>
+<%@user.movies.each do |movie|%>
 <li>
   <%=movie.name%>
 </li>
 <%end%>
 </ul>
 
+<p>
 Maybe add sort by genre or sort by string
+</p>
