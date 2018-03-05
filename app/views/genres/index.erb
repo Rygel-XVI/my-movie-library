@@ -1,13 +1,22 @@
 show welcome to genres and list all genres associated with user if logged in
 
+<% if @user_genres.length > 0 %>
 <ul>
-<% Genre.all.each do |genre| %>
+<% @user_genres.each do |genre| %>
 <li>
   <a href="/genres/<%=genre.slug%>"><%=genre.name%></a>
 </li>
 <% end %>
 </ul>
 
+<% else %>
+
+  <p> Create a Genre or Movie below </p>
+
+<% end %>
+
 <br></br>
 
 <a href='/genres/create_genre'>Create New Genre</a>
+
+<a href='/movies/create_movie'>Create New Movie</a>

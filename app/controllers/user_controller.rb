@@ -45,7 +45,6 @@ class UserController < ApplicationController
   post '/users/login' do
     @user = User.find_by(name: params[:name])
     if @user && @user.authenticate(params[:password])
-      binding.pry
       login(@user)
       redirect to "/users/#{@user.slug}"
     else
