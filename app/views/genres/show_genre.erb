@@ -1,7 +1,9 @@
 Genre show form
 
+<a href='/genres/<%=@genre.slug%>/edit_genre'>Edit Genre</a>
+<p>
 for the genre show all movies associated with it
-
+</p>
 <% @genre.movies.each do |movie| %>
 
   <%=movie.name%>

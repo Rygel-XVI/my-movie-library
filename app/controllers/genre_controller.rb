@@ -8,11 +8,11 @@ class GenreController < ApplicationController
     end
   end
 
-  get '/genres/create' do
+  get '/genres/create_genre' do
     erb :'/genres/create_genre'
   end
 
-  get '/genres/:slug/edit' do
+  get '/genres/:slug/edit_genre' do
     @genre = Genre.find_by_slug(params[:slug])
     erb :'/genres/edit_genre'
   end
@@ -22,14 +22,14 @@ class GenreController < ApplicationController
     erb :'/genres/show_genre'
   end
 
-  post '/genres/create' do
+  post '/genres/create_genre' do
     if !params[:name].empty?
       @genre = Genre.create(name: params[:name])
     end
     redirect to "/genres/#{@genre.slug}"
   end
 
-  patch '/genres/:slug/edit' do
+  patch '/genres/:slug/edit_genre' do
     @genre = Genre.find_by_slug(params[:slug])
     if !params[:name].empty?
       @genre.update(name: params[:name])
