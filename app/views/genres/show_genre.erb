@@ -4,8 +4,13 @@ Genre show form
 <p>
 for the genre show all movies associated with it
 </p>
+
+<ul>
 <% @genre.movies.each do |movie| %>
 
-  <%=movie.name%>
+<li>
+  <a href='/movies/<%=movie.slug%>'><%=movie.name%></a>
+</li>
 
 <% end %>
+</ul>
