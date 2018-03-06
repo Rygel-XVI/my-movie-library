@@ -1,7 +1,13 @@
 class MovieController < ApplicationController
 
   get '/movies' do
-    erb :'/movies/show'
+    if logged_in?
+      @user = get_user_by_session
+      @user_movies = @user.movies
+      erb :'/movies/index'
+    else
+      redirect to '/'
+    end
   end
 
   get '/movies/create_movie' do
@@ -9,24 +15,24 @@ class MovieController < ApplicationController
   end
 
   get '/movies/:slug/edit_movie' do
-    @movie = movie.find_by_slug(params[:slug])
+    @movie = Movie.find_by_slug(params[:slug])
     erb :'/movies/edit_movie'
   end
 
   get '/movies/:slug' do
-    @movie = movie.find_by_slug(params[:slug])
+    @movie = Movie.find_by_slug(params[:slug])
     erb :'/movies/show_movie'
   end
 
   post '/movies/create_movie' do
     if !params[:name].empty?
-      @movie = movie.create(name: params[:name])
+      @movie = Movie.create(name: params[:name])
     end
     redirect to "/movies/#{@movie.slug}"
   end
 
   patch '/movies/:slug/edit_movie' do
-    @movie = movie.find_by_slug(params[:slug])
+    @movie = Movie.find_by_slug(params[:slug])
     if !params[:name].empty?
       @movie.update(name: params[:name])
     end

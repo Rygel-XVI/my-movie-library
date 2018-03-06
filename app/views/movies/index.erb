@@ -1,1 +1,22 @@
 movie index
+
+<% if @user_movies.length > 0 %>
+<ul>
+<% @user_movies.each do |movie| %>
+<li>
+  <a href="/movies/<%=movie.slug%>"><%=movie.name%></a>
+</li>
+<% end %>
+</ul>
+
+<% else %>
+
+  <p> Create a Genre or Movie below </p>
+
+<% end %>
+
+<br></br>
+
+<a href='/genres/create_genre'>Create New Genre</a>
+
+<a href='/movies/create_movie'>Create New Movie</a>
