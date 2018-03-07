@@ -4,7 +4,6 @@ class GenreController < ApplicationController
     if logged_in?
       @user = get_user_by_session
       @user_genres = @user.movies.map {|movie| movie.genres}.flatten
-      binding.pry
       erb :'/genres/index'
     else
       redirect to '/'
@@ -12,6 +11,8 @@ class GenreController < ApplicationController
   end
 
   get '/genres/create_genre' do
+    @user = get_user_by_session
+    @gid = @user.genre_ids.map {|genre_id| Genre.find(genre_id)} ##list of genres owned by user
     erb :'/genres/create_genre'
   end
 
@@ -22,12 +23,19 @@ class GenreController < ApplicationController
 
   get '/genres/:slug' do
     @genre = Genre.find_by_slug(params[:slug])
+    @user = get_user_by_session
+    @user_movies = @user.movies.map do |movie|
+      if movie.genre_ids.include?(@genre.id)
+        movie
+      end
+    end
     erb :'/genres/show_genre'
   end
 
   post '/genres/create_genre' do
-    if !params[:name].empty?
-      @genre = Genre.create(name: params[:name])
+    if !params[:genre][:name].empty?
+      binding.pry
+      @genre = Genre.create(name: params[:genre][:name])
     end
     redirect to "/genres/#{@genre.slug}"
   end

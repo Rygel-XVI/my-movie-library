@@ -2,15 +2,18 @@ Genre show form
 
 <a href='/genres/<%=@genre.slug%>/edit_genre'>Edit Genre</a>
 <p>
-for the genre show all movies associated with it
+  for the genre show all movies associated with it
 </p>
 
 <ul>
-<% @genre.movies.each do |movie| %>
+<% @user_movies.each do |movie| %>
 
-<li>
-  <a href='/movies/<%=movie.slug%>'><%=movie.name%></a>
-</li>
+  <% if !movie.nil? %>
+  <li>
+    <a href='/movies/<%=movie.slug%>'><%=movie.name%></a>
+  </li>
 
-<% end %>
+  <% end %>
+
+  <% end %>
 </ul>
