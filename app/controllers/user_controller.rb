@@ -30,8 +30,12 @@ class UserController < ApplicationController
   end
 
   get '/users/:slug/edit' do
-    @user = User.find_by_slug(params[:slug])
-    erb :'/users/edit'
+    if logged_in? && same_user(User.find_by_slug(params[:slug]))
+      @user = User.find_by_slug(params[:slug])
+      erb :'/users/edit'
+    else
+      redirect to '/'
+    end
   end
 
   get '/users/:slug/delete' do
