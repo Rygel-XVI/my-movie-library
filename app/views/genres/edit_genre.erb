@@ -5,6 +5,17 @@ Genre edit form
 <label for='name'>Genre Name</label>
 <input type='text' name='name' id='name'>
 
+<br></br>
+
+<% @user_movies.each do |movie| %>
+
+  <label for='movie_id'><%=movie.name%></label>
+  <input type='checkbox' name="genre[movie_ids][]" value="<%=movie.id%>" id='movie_id' <%='checked' if movie.genres.include?(@genre) %> >
+
+<% end %>
+
+<br></br>
+
 <input type='submit' value='Edit Genre'>
 </form>
 

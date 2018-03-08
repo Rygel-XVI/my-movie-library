@@ -73,7 +73,6 @@ class UserController < ApplicationController
   end
 
   delete '/users/:slug/delete' do
-    binding.pry
     @user = User.find_by_slug(params[:slug])
     if logged_in? && same_user?(@user)
       #add a success flash message
