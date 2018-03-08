@@ -11,19 +11,31 @@ class MovieController < ApplicationController
   end
 
   get '/movies/create_movie' do
-    @user_genres = get_user_by_session.genres.uniq
-    erb :'/movies/create_movie'
+    if logged_in?
+      @user_genres = get_user_by_session.genres.uniq
+      erb :'/movies/create_movie'
+    else
+      redirect to '/'
+    end
   end
 
   get '/movies/:slug/edit_movie' do
-    @movie = Movie.find_by_slug(params[:slug])
-    @user_genres = get_user_by_session.genres.uniq
-    erb :'/movies/edit_movie'
+    if logged_in?
+      @movie = Movie.find_by_slug(params[:slug])
+      @user_genres = get_user_by_session.genres.uniq
+      erb :'/movies/edit_movie'
+    else
+      redirect to '/'
+    end
   end
 
   get '/movies/:slug' do
-    @movie = Movie.find_by_slug(params[:slug])
-    erb :'/movies/show_movie'
+    if logged_in?
+      @movie = Movie.find_by_slug(params[:slug])
+      erb :'/movies/show_movie'
+    else
+      redirect to '/'
+    end
   end
 
   post '/movies/create_movie' do

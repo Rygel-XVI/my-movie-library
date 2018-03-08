@@ -3,7 +3,6 @@ class GenreController < ApplicationController
 
 
   get '/genres' do
-    binding.pry
     if logged_in?
       @user = get_user_by_session
       @user_genres = @user.genres.uniq
@@ -14,20 +13,32 @@ class GenreController < ApplicationController
   end
 
   get '/genres/create_genre' do
-    @user_movies = get_user_by_session.movies
-    erb :'/genres/create_genre'
+    if logged_in?
+      @user_movies = get_user_by_session.movies
+      erb :'/genres/create_genre'
+    else
+      redirect to '/'
+    end
   end
 
   get '/genres/:slug/edit_genre' do
-    @genre = Genre.find_by_slug(params[:slug])
-    @user_movies = get_user_by_session.movies
-    erb :'/genres/edit_genre'
+    if logged_in?
+      @genre = Genre.find_by_slug(params[:slug])
+      @user_movies = get_user_by_session.movies
+      erb :'/genres/edit_genre'
+    else
+      redirect to '/'
+    end
   end
 
   get '/genres/:slug' do
-    @genre = Genre.find_by_slug(params[:slug])
-    @user_movies = get_user_by_session.movies.find_all {|movie| movie.genres.include?(@genre)}
-    erb :'/genres/show_genre'
+    if logged_in?
+      @genre = Genre.find_by_slug(params[:slug])
+      @user_movies = get_user_by_session.movies.find_all {|movie| movie.genres.include?(@genre)}
+      erb :'/genres/show_genre'
+    else
+      redirect to '/'
+    end
   end
 
   post '/genres/create_genre' do
