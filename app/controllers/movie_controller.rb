@@ -11,6 +11,7 @@ class MovieController < ApplicationController
   end
 
   get '/movies/create_movie' do
+    @user_genres = get_user_by_session.genres
     erb :'/movies/create_movie'
   end
 
@@ -26,13 +27,14 @@ class MovieController < ApplicationController
   end
 
   post '/movies/create_movie' do
-    if !params[:name].empty?
-      @movie = Movie.create(name: params[:name])
-    end
-    if !!params[:movie][:genre_ids]
+    if !params[:movie][:name].empty?
+      @movie = Movie.create(name: params[:movie][:name])
       @movie.genre_ids = params[:movie][:genre_ids]
+      get_user_by_session.movies << @movie
+      redirect to "/movies/#{@movie.slug}"
+    else
+      redirect to '/movies'
     end
-    redirect to "/movies/#{@movie.slug}"
   end
 
   patch '/movies/:slug/edit_movie' do

@@ -6,9 +6,9 @@ create a movie
 
 <br></br>
 
-<% @user_movies.each do |movie| %>
+<% @user_genres.each do |genre| %>
 
-  <label for='genre_id'><%=movie.name%></label>
+  <label for='genre_id'><%=genre.name%></label>
   <input type='checkbox' name="movie[genre_ids][]" value="<%=genre.id%>" id='genre_id'>
 
 <% end %>

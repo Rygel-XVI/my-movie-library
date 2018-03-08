@@ -3,7 +3,7 @@ class GenreController < ApplicationController
   get '/genres' do
     if logged_in?
       @user = get_user_by_session
-      @user_genres = @user.genres
+      @user_genres = @user.genres.uniq
       erb :'/genres/index'
     else
       redirect to '/'
@@ -24,22 +24,30 @@ class GenreController < ApplicationController
   get '/genres/:slug' do
     @genre = Genre.find_by_slug(params[:slug])
     @user_movies = get_user_by_session.movies.find_all {|movie| movie.genres.include?(@genre)}
-    # @user_movies = get_user_by_session.movies.map do |movie|
-    #   if movie.genres.include?(@genre)
-    #     movie
-    #   end
-    # end
     erb :'/genres/show_genre'
   end
 
   post '/genres/create_genre' do
-    if !params[:genre][:name].empty?
-      @genre = Genre.create(name: params[:genre][:name])
+    if !params[:genre][:name].empty? ##checks for text in text box
+
+      if !Genre.find_by(name: params[:genre][:name])  ##checks if genre already exists
+        @genre = Genre.create(name: params[:genre][:name])
+
+        # checks for checked boxes and then redirects to show page
+        if !!params[:genre][:movie_ids]
+          @genre.movie_ids = params[:genre][:movie_ids]
+        end
+
+        redirect to "/genres/#{@genre.slug}"
+
+      else
+        # add flash message that it already exists
+        redirect to "/genres"
+
+      end
     end
-    if !!params[:genre][:movie_ids]
-      @genre.movie_ids = params[:genre][:movie_ids]
-    end
-    redirect to "/genres/#{@genre.slug}"
+    # if no input was entered
+    redirect to "/genres"
   end
 
   patch '/genres/:slug/edit_genre' do
@@ -54,7 +62,8 @@ class GenreController < ApplicationController
   end
 
   delete '/genres/:slug/delete' do
-
+    #no deleting by the user, too complicated. they should contact the program admin to do this
+    #unused genres would have to get deleted intermittently
   end
 
 
