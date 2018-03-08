@@ -12,6 +12,7 @@ class UserController < ApplicationController
   get '/users/signup' do
     if logged_in?
       @user = get_user_by_session
+      flash[:message] = "Already logged in, logout to login as another user."
       redirect to "/users/#{@user.slug}"
     else
       erb :'/users/signup'
@@ -21,6 +22,7 @@ class UserController < ApplicationController
   get '/users/logout' do
     if logged_in?
       session.clear
+      flash[:message] = "Successfully logged out"
       redirect to '/users/login'
     else
       redirect to '/'
@@ -46,8 +48,10 @@ class UserController < ApplicationController
     @user = User.find_by(name: params[:name])
     if @user && @user.authenticate(params[:password])
       login(@user)
+      flash[:message] = "Login Successful"
       redirect to "/users/#{@user.slug}"
     else
+      flash[:message] = "Username or Password incorrect"
       redirect to '/users/login'
     end
   end
@@ -75,10 +79,12 @@ class UserController < ApplicationController
   delete '/users/:slug/delete' do
     @user = User.find_by_slug(params[:slug])
     if logged_in? && same_user?(@user)
-      #add a success flash message
       @user.destroy
       session.clear
-    end
+      flash[:message] = "User Deleted"
+      redirect to '/'
+    else
+      flash[:message] = "Error deleting user. Please contact admin to resolve."
       redirect to '/'
   end
 
