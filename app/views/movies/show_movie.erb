@@ -1,9 +1,11 @@
-show movie
+<h2><%=@movie.name%></h2>
 
-<%=@movie.name%>
+<a href='/movies'>All of your movies</a>
 
 <a href='/movies/<%=@movie.slug%>/edit_movie'>Edit Movie</a>
 
+
+<h4>Genres include</h4>
 <ul>
 <% @movie.genres.each do |genre| %>
 <li>

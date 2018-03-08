@@ -3,7 +3,7 @@ class GenreController < ApplicationController
   get '/genres' do
     if logged_in?
       @user = get_user_by_session
-      @user_genres = @user.movies.map {|movie| movie.genres}.flatten
+      @user_genres = @user.genres
       erb :'/genres/index'
     else
       redirect to '/'
@@ -23,11 +23,12 @@ class GenreController < ApplicationController
 
   get '/genres/:slug' do
     @genre = Genre.find_by_slug(params[:slug])
-    @user_movies = get_user_by_session.movies.map do |movie|
-      if movie.genres.include?(@genre)
-        movie
-      end
-    end
+    @user_movies = get_user_by_session.movies.find_all {|movie| movie.genres.include?(@genre)}
+    # @user_movies = get_user_by_session.movies.map do |movie|
+    #   if movie.genres.include?(@genre)
+    #     movie
+    #   end
+    # end
     erb :'/genres/show_genre'
   end
 

@@ -16,6 +16,7 @@ class MovieController < ApplicationController
 
   get '/movies/:slug/edit_movie' do
     @movie = Movie.find_by_slug(params[:slug])
+    @user_genres = get_user_by_session.genres
     erb :'/movies/edit_movie'
   end
 
