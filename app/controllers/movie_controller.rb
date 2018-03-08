@@ -28,6 +28,9 @@ class MovieController < ApplicationController
     if !params[:name].empty?
       @movie = Movie.create(name: params[:name])
     end
+    if !!params[:movie][:genre_ids]
+      @movie.genre_ids = params[:movie][:genre_ids]
+    end
     redirect to "/movies/#{@movie.slug}"
   end
 
@@ -35,6 +38,9 @@ class MovieController < ApplicationController
     @movie = Movie.find_by_slug(params[:slug])
     if !params[:name].empty?
       @movie.update(name: params[:name])
+    end
+    if !!params[:movie][:genre_ids]
+      @movie.genre_ids = params[:movie][:genre_ids]
     end
     redirect to "/movies/#{@movie.slug}"
   end

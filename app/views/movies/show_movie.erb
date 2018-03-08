@@ -2,6 +2,8 @@ show movie
 
 <%=@movie.name%>
 
+<a href='/movies/<%=@movie.slug%>/edit_movie'>Edit Movie</a>
+
 <ul>
 <% @movie.genres.each do |genre| %>
 <li>

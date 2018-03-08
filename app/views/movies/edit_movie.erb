@@ -1,1 +1,20 @@
 edit movie
+<form method='post' action='/movies/<%=@movie.slug%>/edit_movie'>
+<input type='hidden' name='_method' value='patch'>
+
+<label for='name'>Movie Name</label>
+<input type='text' name='name' id='name'>
+
+<br></br>
+
+<% @user_genres.each do |genre| %>
+
+  <label for='genre_id'><%=genre.name%></label>
+  <input type='checkbox' name="movie[genre_ids][]" value="<%=genre.id%>" id='genre_id' <%='checked' if genre.movies.include?(@movie) %> >
+
+<% end %>
+
+<br></br>
+
+<input type='submit' value='Edit Movie'>
+</form>

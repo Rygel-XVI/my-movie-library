@@ -1,1 +1,20 @@
 create a movie
+
+<form method='post' action='/movies/create_movie'>
+  <label for='movie_name'>New Movie Name: </label>
+  <input type='text' name='movie[name]' id='movie_name'>
+
+<br></br>
+
+<% @user_movies.each do |movie| %>
+
+  <label for='genre_id'><%=movie.name%></label>
+  <input type='checkbox' name="movie[genre_ids][]" value="<%=genre.id%>" id='genre_id'>
+
+<% end %>
+
+<br></br>
+
+  <input type='submit' value='Create Movie'>
+
+</form>
