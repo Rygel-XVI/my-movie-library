@@ -12,7 +12,7 @@ class GenreController < ApplicationController
 
   get '/genres/create_genre' do
     @user = get_user_by_session
-    @gid = @user.genre_ids.map {|genre_id| Genre.find(genre_id)} ##list of genres owned by user
+    @user_movies = @user.movie_ids.map {|movie_id| Movie.find(movie_id)} ##list of movies owned by user
     erb :'/genres/create_genre'
   end
 
@@ -34,9 +34,13 @@ class GenreController < ApplicationController
 
   post '/genres/create_genre' do
     if !params[:genre][:name].empty?
-      binding.pry
       @genre = Genre.create(name: params[:genre][:name])
     end
+    binding.pry
+    if !!params[:genre][:movie_ids]
+      @genre.movie_ids = params[:genre][:movie_ids]
+    end
+    binding.pry
     redirect to "/genres/#{@genre.slug}"
   end
 
