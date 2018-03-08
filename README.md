@@ -1,8 +1,6 @@
 # MyMovieLibrary
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/my_movie_library`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This is My Movie Library. A simple Sinatra application that allows you to sign in and keep track of your movies. So next time you have some friends over and can't remember all the movies that you have, sign in and take a look.
 
 ## Installation
 
