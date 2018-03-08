@@ -3,6 +3,7 @@ class GenreController < ApplicationController
 
 
   get '/genres' do
+    binding.pry
     if logged_in?
       @user = get_user_by_session
       @user_genres = @user.genres.uniq
@@ -60,7 +61,7 @@ class GenreController < ApplicationController
       if !params[:name].empty?
         @genre.update(name: params[:name])
       end
-      if !!params[:genre][:movie_ids]
+      if !!defined?params[:genre][:movie_ids]
         @genre.movie_ids = params[:genre][:movie_ids]
       end
     else

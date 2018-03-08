@@ -86,6 +86,7 @@ class UserController < ApplicationController
     else
       flash[:message] = "Error deleting user. Please contact admin to resolve."
       redirect to '/'
+    end
   end
 
 end
