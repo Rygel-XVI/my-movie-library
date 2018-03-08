@@ -1,3 +1,7 @@
 <h1>My Movie Library</h1>
 
+<% if flash.has?(:message) %>
+  <%= flash[:message] %>
+<% end %>
+
 <%=yield%>

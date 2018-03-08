@@ -1,4 +1,6 @@
 class GenreController < ApplicationController
+  use Rack::Flash
+
 
   get '/genres' do
     if logged_in?
@@ -37,27 +39,34 @@ class GenreController < ApplicationController
         if !!params[:genre][:movie_ids]
           @genre.movie_ids = params[:genre][:movie_ids]
         end
-
+        flash[:message] = "#{params[:genre][:name]} created."
         redirect to "/genres/#{@genre.slug}"
 
       else
-        # add flash message that it already exists
+        flash[:message] = "#{params[:genre][:name]} already exists"
         redirect to "/genres"
 
       end
     end
-    # if no input was entered
+
+    flash[:message] = "No genre name entered"
     redirect to "/genres"
   end
 
+# add flash messages
   patch '/genres/:slug/edit_genre' do
     @genre = Genre.find_by_slug(params[:slug])
-    if !params[:name].empty?
-      @genre.update(name: params[:name])
+    if !Genre.find_by(name: params[:name])
+      if !params[:name].empty?
+        @genre.update(name: params[:name])
+      end
+      if !!params[:genre][:movie_ids]
+        @genre.movie_ids = params[:genre][:movie_ids]
+      end
+    else
+      # message already exists
     end
-    if !!params[:genre][:movie_ids]
-      @genre.movie_ids = params[:genre][:movie_ids]
-    end
+
     redirect to "/genres/#{@genre.slug}"
   end
 
