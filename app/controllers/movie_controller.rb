@@ -41,8 +41,17 @@ class MovieController < ApplicationController
   post '/movies/create_movie' do
     if !params[:movie][:name].empty?
       @movie = Movie.create(name: params[:movie][:name])
-      @movie.genre_ids = params[:movie][:genre_ids]
+
+      if !!defined?params[:movie][:genre_ids]
+        @movie.genre_ids = params[:movie][:genre_ids]
+      end
+
+      if !params[:genre][:name].empty?
+        @movie.genres << Genre.create(name: params[:genre][:name])
+      end
+
       get_user_by_session.movies << @movie
+
       redirect to "/movies/#{@movie.slug}"
     else
       redirect to '/movies'
