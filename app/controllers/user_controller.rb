@@ -30,7 +30,7 @@ class UserController < ApplicationController
   end
 
   get '/users/:slug/edit' do
-    if logged_in? && same_user(User.find_by_slug(params[:slug]))
+    if logged_in? && same_user?(User.find_by_slug(params[:slug]))
       @user = User.find_by_slug(params[:slug])
       erb :'/users/edit'
     else
@@ -71,26 +71,57 @@ class UserController < ApplicationController
   end
 
   patch '/users/:slug/edit' do
-    if !params[:email].empty? || !params[:password].empty?
-      #add flash messages
-      @user = User.find_by_slug(params[:slug])
-      @user.update(email: params[:email]) if !params[:email].empty?
-      @user.update(password: params[:password]) if !params[:password].empty?
+    @user = User.find_by_slug(params[:slug])
+
+    if @user && same_user?(@user)
+
+      if @user.authenticate(params[:current_pass])
+
+        if !params[:email].empty? && !params[:new_password].empty?
+          @user.update(email: params[:email], password: params[:new_password])
+          flash[:message] = "Password and Email updated"
+
+        elsif !params[:email].empty?
+          @user.update(email: params[:email])
+          flash[:message] = "Updated email"
+
+        elsif !params[:new_password].empty?
+          @user.update(password: params[:new_password])
+          flash[:message] = "Updated password"
+        end
+
+        redirect to "/users/#{@user.slug}"
+
+      else
+        flash[:message] = "Wrong password"
+        redirect to "/users/#{@user.slug}/edit"
+      end
+
+    else
+      flash[:message] = "Wrong User"
+      redirect to '/users/logout'
     end
-    redirect to "/users/#{@user.slug}"
   end
 
   delete '/users/:slug/delete' do
     @user = User.find_by_slug(params[:slug])
     if logged_in? && same_user?(@user)
-      @user.destroy
-      session.clear
-      flash[:message] = "User Deleted"
-      redirect to '/'
+
+      if @user.authenticate(params[:password])
+        @user.destroy
+        session.clear
+        flash[:message] = "User Deleted"
+        redirect to '/'
+      else
+        flash[:message] = "Wrong password"
+        redirect to "/users/#{@user.slug}/edit"
+      end
+
     else
-      flash[:message] = "Error deleting user. Please contact admin to resolve."
-      redirect to '/'
+      flash[:message] = "Wrong User"
+      redirect to '/users/logout'
     end
+
   end
 
 end

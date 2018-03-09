@@ -4,28 +4,22 @@
 
 <p>Movie List</p>
 
-<p>Add a contingency if movies.length == 0 to put a message</p>
-
 <%if @user.movies.length > 0 %>
 
   <ul>
   <%@user.movies.each do |movie|%>
   <li>
-    <%=movie.name%>
+    <a href="/movies/<%=movie.name%>"><%=movie.name%></a>
   </li>
   <%end%>
   </ul>
 
 <% else %>
 
-  <p>You have no movies yet!</p>
+  <p>You have no movies yet! <a href='/movies/create_movie'>Create a movie.</a></p>
 
 <% end %>
 
-<p>Your <a href='/genres'>Genres</a></p>
-
-<p>
-Maybe add sort by genre or sort by string
-</p>
+<p>Sort by <a href='/genres'>Genres</a></p>
 
 <p><a href='/users/logout'>Logout</a></p>

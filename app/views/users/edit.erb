@@ -1,15 +1,21 @@
 <h4>id: <%=@user.id%> : <%=@user.name%>, update your info here:</h4>
-<br></br>
+
+<p>
+Current Email: <%=@user.email%>
+</p>
+</br>
 
 <form method='post' action='/users/<%=@user.slug%>/edit'>
   <input type='hidden' name='_method' value='patch'>
 
-  <label for='email'>New Email</label>
-  <input type='text' name='email' value='email'>
+  <label for='email'>Update Email</label>
+  <input type='text' name='email' id='email'>
   <br></br>
-  <label for='password'>New Password</label>
-  <input type='text' name='password' value='password'>
-  <br></br>
+  <label for='new_password'>Update Password</label>
+  <input type='text' name='new_password' id='new_password'>
+  <br></br></br>
+  <label for='current_pass'>Please enter current password to update</label></br>
+  <input type='text' name='current_pass' id='current_pass'>
   <input type='submit' value='Update'>
 </form>
 

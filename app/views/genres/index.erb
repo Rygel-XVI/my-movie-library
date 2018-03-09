@@ -1,21 +1,25 @@
 
 <% if @user_genres.length > 0 %>
-<ul>
-<% @user_genres.each do |genre| %>
-<li>
-  <a href="/genres/<%=genre.slug%>"><%=genre.name%></a>
-</li>
-<% end %>
-</ul>
+
+  <ul>
+  <% @user_genres.each do |genre| %>
+
+  <li>
+    <a href="/genres/<%=genre.slug%>"><%=genre.name%></a>
+  </li>
+
+  <% end %>
+  </ul>
 
 <% else %>
 
-  <p> Create a Genre or Movie below </p>
+  <p> You have made no Genres. Create a Genre or Movie below </p>
 
 <% end %>
 
-<br></br>
 
 <a href='/genres/create_genre'>Create New Genre</a>
+
+</br></br>
 
 <a href='/movies/create_movie'>Create New Movie</a>
