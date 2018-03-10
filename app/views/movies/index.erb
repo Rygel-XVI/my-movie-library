@@ -1,4 +1,6 @@
 
+<h2>Movies</h2>
+
 <% if @user_movies.length > 0 %>
 <ul>
 <% @user_movies.each do |movie| %>
@@ -15,7 +17,5 @@
 <% end %>
 
 <br></br>
-
-<a href='/genres/create_genre'>Create New Genre</a>
 
 <a href='/movies/create_movie'>Create New Movie</a>
