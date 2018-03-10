@@ -60,17 +60,28 @@ class MovieController < ApplicationController
 
   patch '/movies/:slug/edit_movie' do
     @movie = Movie.find_by_slug(params[:slug])
+
     if !params[:name].empty?
       @movie.update(name: params[:name])
     end
-    if !!params[:movie][:genre_ids]
+
+    if !!defined?params[:movie][:genre_ids]
       @movie.genre_ids = params[:movie][:genre_ids]
     end
+
+    if !params[:genre][:name].empty?
+      @movie.genres << Genre.create(name: params[:genre][:name])
+    end
+
+    flash[:message] = "#{@movie.name} Updated"
     redirect to "/movies/#{@movie.slug}"
   end
 
-  delete '/movies/:slug/delete' do
-      # add this it shouldn't break anything
+  delete '/movies/:slug/delete_movie' do
+      @movie = Movie.find_by_slug(params[:slug])
+      flash[:message] = "#{@movie.name} has been deleted"
+      @movie.destroy
+      redirect to '/movies'
   end
 
 end

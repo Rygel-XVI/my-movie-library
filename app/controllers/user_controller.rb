@@ -30,7 +30,7 @@ class UserController < ApplicationController
   end
 
   get '/users/:slug/edit' do
-    if logged_in? && same_user?(User.find_by_slug(params[:slug]))
+    if logged_in? && same_user(User.find_by_slug(params[:slug]))
       @user = User.find_by_slug(params[:slug])
       erb :'/users/edit'
     else
@@ -106,22 +106,14 @@ class UserController < ApplicationController
   delete '/users/:slug/delete' do
     @user = User.find_by_slug(params[:slug])
     if logged_in? && same_user?(@user)
-
-      if @user.authenticate(params[:password])
-        @user.destroy
-        session.clear
-        flash[:message] = "User Deleted"
-        redirect to '/'
-      else
-        flash[:message] = "Wrong password"
-        redirect to "/users/#{@user.slug}/edit"
-      end
-
+      @user.destroy
+      session.clear
+      flash[:message] = "User Deleted"
+      redirect to '/'
     else
-      flash[:message] = "Wrong User"
-      redirect to '/users/logout'
+      flash[:message] = "Error deleting user. Please contact admin to resolve."
+      redirect to '/'
     end
-
   end
 
 end
