@@ -11,7 +11,7 @@
   <ul>
   <%@user.movies.each do |movie|%>
   <li>
-    <a href="/movies/<%=movie.name%>"><%=movie.name%></a>
+    <a href="/movies/<%=movie.slug%>"><%=movie.name%></a>
   </li>
   <%end%>
   </ul>

@@ -33,7 +33,6 @@ class MovieController < ApplicationController
     if logged_in?
       @movie = Movie.find_by_slug(params[:slug])
       @user = get_user_by_session
-      binding.pry
       erb :'/movies/show_movie'
     else
       redirect to '/'
@@ -45,10 +44,12 @@ class MovieController < ApplicationController
       @movie = Movie.create(name: params[:movie][:name])
       @movie.user = get_user_by_session
 
+# associates existing genres to the movie
       if !!params[:movie][:genre_ids]
         @movie.genre_ids = params[:movie][:genre_ids]
       end
 
+# if user wants to make a new genre this creates a new genre and associates it with the current user and movie
       if !params[:genre][:name].empty?
         @genre = Genre.create(name: params[:genre][:name])
         @movie.genres << @genre
