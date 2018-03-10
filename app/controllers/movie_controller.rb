@@ -32,6 +32,7 @@ class MovieController < ApplicationController
   get '/movies/:slug' do
     if logged_in?
       @movie = Movie.find_by_slug(params[:slug])
+      @user = get_user_by_session
       erb :'/movies/show_movie'
     else
       redirect to '/'

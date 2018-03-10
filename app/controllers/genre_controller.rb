@@ -51,6 +51,7 @@ class GenreController < ApplicationController
         if !!params[:genre][:movie_ids]
           @genre.movie_ids = params[:genre][:movie_ids]
         end
+        
         flash[:message] = "#{params[:genre][:name]} created."
         redirect to "/genres/#{@genre.slug}"
 
@@ -65,27 +66,24 @@ class GenreController < ApplicationController
     redirect to "/genres"
   end
 
-# add flash messages
   patch '/genres/:slug/edit_genre' do
     @genre = Genre.find_by_slug(params[:slug])
     if !Genre.find_by(name: params[:name])
+
       if !params[:name].empty?
         @genre.update(name: params[:name])
       end
+
       if !!defined?params[:genre][:movie_ids]
         @genre.movie_ids = params[:genre][:movie_ids]
       end
+
+      flash[:message] = "Genre Updated"
     else
-      # message already exists
+      flash[:message] = "Genre not updated. Contact admin if problem persists."
     end
 
     redirect to "/genres/#{@genre.slug}"
   end
-
-  delete '/genres/:slug/delete' do
-    #no deleting by the user, too complicated. they should contact the program admin to do this
-    #unused genres would have to get deleted intermittently
-  end
-
 
 end

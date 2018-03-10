@@ -1,12 +1,9 @@
 <h2><%=@movie.name%></h2>
-
-<p>
-<a href='/movies'>All Movies</a>
-</p>
-
-<p>
 <a href='/movies/<%=@movie.slug%>/edit_movie'>Edit</a>
-</p>
+
+<br></br>
+
+<a href='/users/<%=@user.slug%>'>User Homepage</a>
 
 <h4>Genres include</h4>
 <ul>
@@ -16,6 +13,12 @@
 </li>
 <% end %>
 </ul>
+
+</br>
+
+<a href='/movies'>All Movies</a>
+
+<br></br>
 
 <form method='post' action='/movies/<%=@movie.slug%>/delete_movie'>
 <input type='hidden' name='_method' value='delete'>
