@@ -2,6 +2,8 @@
 
 <p><a href='/users/<%=@user.slug%>/edit'>Edit Profile</a></p>
 
+<p>Sort by <a href='/genres'>Genres</a></p>
+
 <p>Movie List</p>
 
 <%if @user.movies.length > 0 %>
@@ -19,7 +21,5 @@
   <p>You have no movies yet! <a href='/movies/create_movie'>Create a movie.</a></p>
 
 <% end %>
-
-<p>Sort by <a href='/genres'>Genres</a></p>
 
 <p><a href='/users/logout'>Logout</a></p>

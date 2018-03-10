@@ -3,6 +3,7 @@ class Genre < ActiveRecord::Base
   extend Slugifiable::ClassMethods
 
   belongs_to :user
-  has_many :movies, through: :users
+  has_many :movie_genres
+  has_many :movies, through: :movie_genres
 
 end

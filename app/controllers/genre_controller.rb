@@ -51,7 +51,7 @@ class GenreController < ApplicationController
         if !!params[:genre][:movie_ids]
           @genre.movie_ids = params[:genre][:movie_ids]
         end
-        
+
         flash[:message] = "#{params[:genre][:name]} created."
         redirect to "/genres/#{@genre.slug}"
 
