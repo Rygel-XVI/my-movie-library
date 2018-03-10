@@ -43,10 +43,10 @@ class MovieController < ApplicationController
     if !params[:movie][:name].empty?
       @movie = Movie.create(name: params[:movie][:name])
 
-      if !!defined?params[:movie][:genre_ids]
+      if !!params[:movie][:genre_ids]
         @movie.genre_ids = params[:movie][:genre_ids]
       end
-
+binding.pry
       if !params[:genre][:name].empty?
         @movie.genres << Genre.create(name: params[:genre][:name])
       end
