@@ -1,12 +1,21 @@
 <body>
-<h1>My Movie Library</h1>
+  <h1>My Movie Library</h1>
 
-<div bgcolor='green'>
-<% if flash.has?(:message) %>
+  <% if flash.has?(:message) %>
   <%= flash[:message] %>
-<% end %>
-</div>
+  <% end %>
 
-<%=yield%>
+  <nav>
+    <% if logged_in? %>
+    <ul>
+      <a href='/users/<%=get_user_by_session.slug%>'>Home</a>
+      <a href='/users/<%=get_user_by_session.slug%>/logout'>Logout</a>
+      <a href='/movies'>Movies</a>
+      <a href='/genres'>Genres</a>
+    </ul>
+    <% end %>
+  </nav>
+
+  <%=yield%>
 
 </body>
