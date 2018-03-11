@@ -40,8 +40,10 @@ class MovieController < ApplicationController
   end
 
   post '/movies/create_movie' do
-    if !params[:movie][:name].empty?
-      @movie = Movie.create(name: params[:movie][:name])
+
+    if !params[:movie][:name].empty? && !Movie.find_by(name: sanitize_input(params[:movie][:name]))
+      sanitized_movie = sanitize_input(params[:movie][:name])
+      @movie = Movie.create(name: sanitized_movie)
       @movie.user = get_user_by_session
 
 # associates existing genres to the movie
@@ -50,8 +52,10 @@ class MovieController < ApplicationController
       end
 
 # if user wants to make a new genre this creates a new genre and associates it with the current user and movie
-      if !params[:genre][:name].empty?
-        @genre = Genre.create(name: params[:genre][:name])
+      if !params[:genre][:name].empty? && !Genre.find_by(name: sanitize_input(params[:genre][:name]))
+        sanitized_genre = sanitize_input(params[:genre][:name])
+
+        @genre = Genre.create(name: sanitized_genre)
         @movie.genres << @genre
         @genre.user = get_user_by_session
         @genre.save
@@ -68,7 +72,7 @@ class MovieController < ApplicationController
     @movie = Movie.find_by_slug(params[:slug])
 
     if !params[:name].empty?
-      @movie.update(name: params[:name])
+      @movie.update(name: sanitize_input(params[:name]))
     end
 
     if !!defined?params[:movie][:genre_ids]
@@ -76,7 +80,7 @@ class MovieController < ApplicationController
     end
 
     if !params[:genre][:name].empty?
-      @genre = Genre.create(name: params[:genre][:name])
+      @genre = Genre.create(name: sanitize_input(params[:genre][:name]))
       @movie.genres << @genre
       @genre.user = get_user_by_session
       @genre.save

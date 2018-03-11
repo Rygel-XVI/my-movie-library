@@ -42,7 +42,7 @@ class ApplicationController < Sinatra::Base
     end
 
     def sanitize_input(input)
-      input.gsub(/\W/, "")
+      input.gsub(/[^\w\s]/, "")
     end
 
   end
