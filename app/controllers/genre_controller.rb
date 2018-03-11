@@ -93,4 +93,11 @@ class GenreController < ApplicationController
     redirect to "/genres/#{@genre.slug}"
   end
 
+  delete '/genres/:slug/delete_genre' do
+      @genre = Genre.find_by_slug(params[:slug])
+      @genre.destroy
+      flash[:message] = "#{@genre.name} has been deleted"
+      redirect to '/genres'
+  end
+
 end

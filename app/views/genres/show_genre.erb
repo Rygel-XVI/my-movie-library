@@ -14,4 +14,7 @@
   <% end %>
 </ul>
 
+<form method='post' action="/genres/<%=@genre.slug%>/delete_genre">
+  <input type='hidden' name='_method' value='delete'>
+  <input type='submit' value="Delete Genre">
 </form>
