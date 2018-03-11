@@ -9,7 +9,7 @@
     <% if logged_in? %>
     <ul>
       <a href='/users/<%=get_user_by_session.slug%>'>Home</a>
-      <a href='/users/<%=get_user_by_session.slug%>/logout'>Logout</a>
+      <a href='/users/logout'>Logout</a>
       <a href='/movies'>Movies</a>
       <a href='/genres'>Genres</a>
     </ul>

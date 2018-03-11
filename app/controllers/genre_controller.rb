@@ -4,7 +4,6 @@ class GenreController < ApplicationController
 
   get '/genres' do
     if logged_in?
-      binding.pry
       @user = get_user_by_session
       @user_genres = @user.genres
       erb :'/genres/index'
@@ -54,7 +53,7 @@ class GenreController < ApplicationController
         if !!params[:genre][:movie_ids]
           @genre.movie_ids = params[:genre][:movie_ids]
         end
-        binding.pry
+
         flash[:message] = "#{params[:genre][:name]} created."
         redirect to "/genres/#{@genre.slug}"
 

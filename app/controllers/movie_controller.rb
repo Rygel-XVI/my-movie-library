@@ -76,7 +76,10 @@ class MovieController < ApplicationController
     end
 
     if !params[:genre][:name].empty?
-      @movie.genres << Genre.create(name: params[:genre][:name])
+      @genre = Genre.create(name: params[:genre][:name])
+      @movie.genres << @genre
+      @genre.user = get_user_by_session
+      @genre.save
     end
 
     flash[:message] = "#{@movie.name} Updated"
