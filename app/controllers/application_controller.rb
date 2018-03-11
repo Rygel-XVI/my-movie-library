@@ -41,5 +41,9 @@ class ApplicationController < Sinatra::Base
       get_user_by_session == user
     end
 
+    def sanitize_input(input)
+      input.gsub(/\W/, "")
+    end
+
   end
 end
