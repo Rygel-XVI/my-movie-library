@@ -86,11 +86,12 @@ class GenreController < ApplicationController
 
         flash[:message] = "Genre Updated"
       else
-        flash[:message] = "Genre not updated. Contact admin if problem persists."
+        flash[:message] = "#{@genre.name} already exists."
       end
+      redirect to "/genres/#{@genre.slug}"
     else
-
-    redirect to "/genres/#{@genre.slug}"
+    flash[:message] = "Genre does not exists, please create new genre."
+    redirect to '/genres/create_genre'
     end
   end
 
