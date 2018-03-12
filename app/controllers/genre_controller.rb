@@ -23,7 +23,7 @@ class GenreController < ApplicationController
 
   get '/genres/:slug/edit_genre' do
     if logged_in?
-      @genre = Genre.find_by_slug(params[:slug])
+      @genre = get_user_by_session.genres.find_by_slug(params[:slug])
       @user_movies = get_user_by_session.movies
       erb :'/genres/edit_genre'
     else
@@ -33,7 +33,7 @@ class GenreController < ApplicationController
 
   get '/genres/:slug' do
     if logged_in?
-      @genre = Genre.find_by_slug(params[:slug])
+      @genre = get_user_by_session.genres.find_by_slug(params[:slug])
       @user_movies = get_user_by_session.movies.find_all {|movie| movie.genres.include?(@genre)}
       erb :'/genres/show_genre'
     else
@@ -47,7 +47,7 @@ class GenreController < ApplicationController
 
       sanitized = sanitize_input(params[:genre][:name])
 
-      if !Genre.find_by(name: sanitized)  ##checks if genre already exists
+      if !get_user_by_session.genres.find_by(name: sanitized)  ##checks if genre already exists
         @genre = Genre.create(name: sanitized)
         @genre.user = get_user_by_session
         @genre.save
@@ -72,29 +72,30 @@ class GenreController < ApplicationController
   end
 
   patch '/genres/:slug/edit_genre' do
-    @genre = Genre.find_by_slug(params[:slug])
-    sanitized = sanitize_input(params[:name])
+    @genre = get_user_by_session.genres.find_by_slug(params[:slug])
+    if @genre
+      if !get_user_by_session.genres.find_by(name: sanitize_input(params[:name]))
 
-    if !Genre.find_by(name: sanitized)
+        if !params[:name].empty?
+          @genre.update(name: sanitize_input(params[:name]))
+        end
 
-      if !params[:name].empty?
-        @genre.update(name: sanitized)
+        if !!defined?params[:genre][:movie_ids]
+          @genre.movie_ids = params[:genre][:movie_ids]
+        end
+
+        flash[:message] = "Genre Updated"
+      else
+        flash[:message] = "Genre not updated. Contact admin if problem persists."
       end
-
-      if !!defined?params[:genre][:movie_ids]
-        @genre.movie_ids = params[:genre][:movie_ids]
-      end
-
-      flash[:message] = "Genre Updated"
     else
-      flash[:message] = "Genre not updated. Contact admin if problem persists."
-    end
 
     redirect to "/genres/#{@genre.slug}"
+    end
   end
 
   delete '/genres/:slug/delete_genre' do
-      @genre = Genre.find_by_slug(params[:slug])
+      @genre = get_user_by_session.genres.find_by_slug(params[:slug])
       @genre.destroy
       flash[:message] = "#{@genre.name} has been deleted"
       redirect to '/genres'
