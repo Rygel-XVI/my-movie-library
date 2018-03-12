@@ -70,10 +70,16 @@ class UserController < ApplicationController
 
   post '/users/signup' do
     if !params[:name].empty? && !params[:email].empty? && !params[:password].empty?
-      @user = User.create(params)
-      login(@user)
-      redirect to "/users/#{@user.slug}"
+      if !User.find_by(name: sanitize_input(params[:name]))
+        @user = User.create(name: params[:name], email: params[:email], password: params[:password])
+        login(@user)
+        redirect to "/users/#{@user.slug}"
+      else
+        flash[:message] = "User already exists, choose new name or login."
+        redirect to '/'
+      end
     else
+      flash[:message] = "All fields must be filled out"
       redirect to '/'
     end
   end
