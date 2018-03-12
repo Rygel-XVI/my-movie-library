@@ -87,17 +87,17 @@ class UserController < ApplicationController
 
         if !params[:email].empty? && !params[:new_password].empty?
           @user.update(email: params[:email], password: params[:new_password])
-          flash[:message] = "Password and Email updated"
+          str = "Password and Email updated"
 
         elsif !params[:email].empty?
           @user.update(email: params[:email])
-          flash[:message] = "Updated email"
+          str = "Updated email"
 
         elsif !params[:new_password].empty?
           @user.update(password: params[:new_password])
-          flash[:message] = "Updated password"
+          str = "Updated password"
         end
-
+        flash[:message] = str
         redirect to "/users/#{@user.slug}"
 
       else
@@ -113,7 +113,7 @@ class UserController < ApplicationController
 
   delete '/users/:slug/delete' do
     @user = User.find_by_slug(params[:slug])
-    if logged_in? && same_user?(@user)
+    if logged_in? && same_user?(@user) && @user.authenticate(params[:password])
       @user.destroy
       session.clear
       flash[:message] = "User Deleted"
