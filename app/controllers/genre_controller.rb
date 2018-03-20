@@ -96,8 +96,12 @@ class GenreController < ApplicationController
 
   delete '/genres/:slug/delete_genre' do
       @genre = get_user_by_session.genres.find_by_slug(params[:slug])
-      @genre.destroy
-      flash[:message] = "#{@genre.name} has been deleted"
+      if @genre
+        @genre.destroy
+        flash[:message] = "#{@genre.name} has been deleted"
+      else
+          flash[:message] = "Genre does not exist"
+      end
       redirect to '/genres'
   end
 
