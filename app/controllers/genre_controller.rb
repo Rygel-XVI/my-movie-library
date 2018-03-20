@@ -4,8 +4,7 @@ class GenreController < ApplicationController
 
   get '/genres' do
     if logged_in?
-      get_user_by_session
-      @user_genres = @user.genres
+      @user_genres = get_user_by_session.genres
       erb :'/genres/index'
     else
       redirect to '/'
@@ -24,7 +23,7 @@ class GenreController < ApplicationController
   get '/genres/:slug/edit_genre' do
     if logged_in?
       @genre = get_user_by_session.genres.find_by_slug(params[:slug])
-      @user_movies = get_user_by_session.movies
+      @user_movies = @user.movies
       erb :'/genres/edit_genre'
     else
       redirect to '/'
@@ -34,7 +33,7 @@ class GenreController < ApplicationController
   get '/genres/:slug' do
     if logged_in?
       @genre = get_user_by_session.genres.find_by_slug(params[:slug])
-      @user_movies = get_user_by_session.movies.find_all {|movie| movie.genres.include?(@genre)}
+      @user_movies = @user.movies.find_all {|movie| movie.genres.include?(@genre)}
       erb :'/genres/show_genre'
     else
       redirect to '/'
@@ -49,7 +48,7 @@ class GenreController < ApplicationController
 
       if !get_user_by_session.genres.find_by(name: sanitized)  ##checks if genre already exists
         @genre = Genre.create(name: sanitized)
-        @genre.user = get_user_by_session
+        @genre.user = @user
         @genre.save
 
         # checks for checked boxes and then redirects to show page
@@ -74,7 +73,7 @@ class GenreController < ApplicationController
   patch '/genres/:slug/edit_genre' do
     @genre = get_user_by_session.genres.find_by_slug(params[:slug])
     if @genre
-      if !get_user_by_session.genres.find_by(name: sanitize_input(params[:name]))
+      if !@user.find_by(name: sanitize_input(params[:name]))
 
         if !params[:name].empty?
           @genre.update(name: sanitize_input(params[:name]))

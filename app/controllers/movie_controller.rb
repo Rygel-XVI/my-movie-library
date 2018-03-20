@@ -22,7 +22,7 @@ class MovieController < ApplicationController
   get '/movies/:slug/edit_movie' do
     if logged_in?
       @movie = get_user_by_session.movies.find_by_slug(params[:slug])
-      @user_genres = get_user_by_session.genres
+      @user_genres = @user.genres
       erb :'/movies/edit_movie'
     else
       redirect to '/'
@@ -32,7 +32,6 @@ class MovieController < ApplicationController
   get '/movies/:slug' do
     if logged_in?
       @movie = get_user_by_session.movies.find_by_slug(params[:slug])
-      get_user_by_session
       erb :'/movies/show_movie'
     else
       redirect to '/'
@@ -46,7 +45,7 @@ class MovieController < ApplicationController
 
       if !get_user_by_session.movies.find_by(name: sanitized)
         @movie = Movie.create(name: sanitized)
-        @movie.user = get_user_by_session
+        @movie.user = @user
         str = "#{sanitized} Created."
 
         # associates checked genres to the movie
@@ -55,11 +54,11 @@ class MovieController < ApplicationController
         end
 
         # if user wants to make a new genre this creates a new genre and associates it with the current user and movie
-        if !params[:genre][:name].empty? && !get_user_by_session.genres.find_by(name: sanitize_input(params[:genre][:name]))
+        if !params[:genre][:name].empty? && !@user.genres.find_by(name: sanitize_input(params[:genre][:name]))
 
           @genre = Genre.create(name: sanitize_input(params[:genre][:name]))
           @movie.genres << @genre
-          @genre.user = get_user_by_session
+          @genre.user = @user
           @genre.save
 
           str = str + " #{@genre.name} Created."
@@ -98,7 +97,7 @@ class MovieController < ApplicationController
 
         @genre = Genre.create(name: sanitize_input(params[:genre][:name]))
         @movie.genres << @genre
-        @genre.user = get_user_by_session
+        @genre.user = @user
         @genre.save
 
         str = str + " #{@genre.name} Created."
@@ -118,8 +117,12 @@ class MovieController < ApplicationController
 
   delete '/movies/:slug/delete_movie' do
       @movie = get_user_by_session.movies.find_by_slug(params[:slug])
-      @movie.destroy
-      flash[:message] = "#{@movie.name} has been deleted"
+      if @movie
+        @movie.destroy
+        flash[:message] = "#{@movie.name} has been deleted"
+      else
+          flash[:message] = "Movie does not exist"
+      end
       redirect to '/movies'
   end
 
