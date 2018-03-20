@@ -4,7 +4,7 @@ class GenreController < ApplicationController
 
   get '/genres' do
     if logged_in?
-      @user = get_user_by_session
+      get_user_by_session
       @user_genres = @user.genres
       erb :'/genres/index'
     else

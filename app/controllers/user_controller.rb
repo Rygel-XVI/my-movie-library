@@ -2,7 +2,7 @@ class UserController < ApplicationController
 
   get '/users/login' do
     if logged_in?
-      @user = get_user_by_session
+      get_user_by_session
       redirect to "/users/#{@user.slug}"
     else
       erb :'/users/login'
@@ -11,7 +11,7 @@ class UserController < ApplicationController
 
   get '/users/signup' do
     if logged_in?
-      @user = get_user_by_session
+      get_user_by_session
       flash[:message] = "Already logged in, logout to login as another user."
       redirect to "/users/#{@user.slug}"
     else
