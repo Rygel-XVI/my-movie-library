@@ -46,7 +46,7 @@ class GenreController < ApplicationController
 
       sanitized = sanitize_input(params[:genre][:name])
 
-      if !get_user_by_session.genres.find_by(name: sanitized)  ##checks if genre already exists
+      if !get_user_by_session.genres.find_by_slug(sanitized.downcase)  ##checks if genre already exists
         @genre = Genre.create(name: sanitized)
         @genre.user = @user
         @genre.save
@@ -73,7 +73,7 @@ class GenreController < ApplicationController
   patch '/genres/:slug/edit_genre' do
     @genre = get_user_by_session.genres.find_by_slug(params[:slug])
     if @genre
-      if !@user.find_by(name: sanitize_input(params[:name]))
+      if !@user.genres.find_by_slug(sanitize_input(params[:name]).downcase)
 
         if !params[:name].empty?
           @genre.update(name: sanitize_input(params[:name]))
