@@ -70,7 +70,7 @@ class UserController < ApplicationController
 
   post '/users/signup' do
     if !params[:name].empty? && !params[:email].empty? && !params[:password].empty?
-      if !User.find_by_slug(slug(sanitize_input(params[:name])))
+      if !User.find_by_slug(slug(params[:name]))
         @user = User.create(name: sanitize_input(params[:name]), email: params[:email], password: params[:password])
         login(@user)
         redirect to "/users/#{@user.slug}"

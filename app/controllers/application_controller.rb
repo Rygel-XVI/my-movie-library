@@ -46,7 +46,7 @@ class ApplicationController < Sinatra::Base
     end
 
     def slug(input)
-      input.gsub(" ", "-").downcase
+      sanitize_input(input).gsub(" ", "-").downcase
     end
 
   end

@@ -44,10 +44,10 @@ class GenreController < ApplicationController
 
     if !params[:genre][:name].empty? ##checks for text in text box
 
-      sanitized = sanitize_input(params[:genre][:name])
+      # sanitized = sanitize_input(params[:genre][:name])
 
-      if !get_user_by_session.genres.find_by_slug(slug(sanitized))  ##checks if genre already exists
-        @genre = Genre.create(name: sanitized)
+      if !get_user_by_session.genres.find_by_slug(slug(params[:genre][:name]))  ##checks if genre already exists
+        @genre = Genre.create(name: sanitize_input(params[:genre][:name]))
         @genre.user = @user
         @genre.save
 
@@ -56,11 +56,11 @@ class GenreController < ApplicationController
           @genre.movie_ids = params[:genre][:movie_ids]
         end
 
-        flash[:message] = "#{sanitized} created."
+        flash[:message] = "#{@genre.name} created."
         redirect to "/genres/#{@genre.slug}"
 
       else
-        flash[:message] = "#{sanitized} already exists"
+        flash[:message] = "Genre already exists"
         redirect to "/genres"
 
       end
@@ -73,7 +73,7 @@ class GenreController < ApplicationController
   patch '/genres/:slug/edit_genre' do
     @genre = get_user_by_session.genres.find_by_slug(params[:slug])
     if @genre
-      if !@user.genres.find_by_slug(slug(sanitize_input(params[:name])))
+      if !@user.genres.find_by_slug(slug(params[:name]))
 
         if !params[:name].empty?
           @genre.update(name: sanitize_input(params[:name]))
