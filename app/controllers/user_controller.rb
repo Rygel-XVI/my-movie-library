@@ -1,7 +1,6 @@
 class UserController < ApplicationController
 
   get '/users/login' do
-    binding.pry
     if logged_in?
       get_user_by_session
       redirect to "/users/#{@user.slug}"
@@ -71,7 +70,7 @@ class UserController < ApplicationController
 
   post '/users/signup' do
     if !params[:name].empty? && !params[:email].empty? && !params[:password].empty?
-      if !User.find_by_slug(sanitize_input(params[:name]).downcase)
+      if !User.find_by_slug(slug(sanitize_input(params[:name])))
         @user = User.create(name: sanitize_input(params[:name]), email: params[:email], password: params[:password])
         login(@user)
         redirect to "/users/#{@user.slug}"

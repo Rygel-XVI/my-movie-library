@@ -45,5 +45,9 @@ class ApplicationController < Sinatra::Base
       input.gsub(/[^\w\s]/, "")
     end
 
+    def slug(input)
+      input.gsub(" ", "-").downcase
+    end
+
   end
 end
