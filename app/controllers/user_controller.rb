@@ -57,7 +57,7 @@ class UserController < ApplicationController
   end
 
   post '/users/login' do
-    @user = User.find_by(name: params[:name])
+    @user = User.find_by_slug(slug(params[:name]))
     if @user && @user.authenticate(params[:password])
       login(@user)
       flash[:message] = "Login Successful"

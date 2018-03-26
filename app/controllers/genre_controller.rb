@@ -44,8 +44,6 @@ class GenreController < ApplicationController
 
     if !params[:genre][:name].empty? ##checks for text in text box
 
-      # sanitized = sanitize_input(params[:genre][:name])
-
       if !get_user_by_session.genres.find_by_slug(slug(params[:genre][:name]))  ##checks if genre already exists
         @genre = Genre.create(name: sanitize_input(params[:genre][:name]))
         @genre.user = @user

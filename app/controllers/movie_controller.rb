@@ -41,8 +41,6 @@ class MovieController < ApplicationController
   post '/movies/create_movie' do
     if !params[:movie][:name].empty?
 
-      # sanitized = sanitize_input(params[:movie][:name])
-
       if !get_user_by_session.movies.find_by_slug(slug(params[:movie][:name]))
         @movie = Movie.create(name: sanitize_input(params[:movie][:name]))
         @movie.user = @user
