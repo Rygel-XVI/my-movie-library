@@ -54,10 +54,7 @@ class MovieController < ApplicationController
         # if user wants to make a new genre this creates a new genre and associates it with the current user and movie
         if !params[:genre][:name].empty? && !@user.genres.find_by_slug(slug(params[:genre][:name]))
 
-          @genre = Genre.create(name: sanitize_input(params[:genre][:name]))
-          @movie.genres << @genre
-          @genre.user = @user
-          @genre.save
+          update_genres
 
           str = str + " #{@genre.name} Created."
         else
@@ -93,10 +90,7 @@ class MovieController < ApplicationController
 
       if !params[:genre][:name].empty? && !get_user_by_session.genres.find_by_slug(slug(params[:genre][:name]))
 
-        @genre = Genre.create(name: sanitize_input(params[:genre][:name]))
-        @movie.genres << @genre
-        @genre.user = @user
-        @genre.save
+        update_genres
 
         str = str + " #{@genre.name} Created."
 
@@ -122,6 +116,17 @@ class MovieController < ApplicationController
           flash[:message] = "Movie does not exist"
       end
       redirect to '/movies'
+  end
+
+  helpers do
+
+    def update_genres
+      @genre = Genre.create(name: sanitize_input(params[:genre][:name]))
+      @movie.genres << @genre
+      @genre.user = @user
+      @genre.save
+    end
+
   end
 
 end

@@ -81,12 +81,7 @@ class GenreController < ApplicationController
           @genre.update(name: sanitize_input(params[:name]))
         end
 
-        if !!defined?params[:genre][:movie_ids] #if the movie_ids exist then update
-          @genre.movie_ids = params[:genre][:movie_ids]
-        else
-          @genre.movies.clear
-          @genre.save
-        end
+        update_movies
 
         flash[:message] = "Genre Updated"
 
@@ -94,12 +89,7 @@ class GenreController < ApplicationController
       elsif @user.genres.find_by_slug(slug(params[:name])).slug == @genre.slug
         @genre.update(name: sanitize_input(params[:name]))
 
-        if !!defined?params[:genre][:movie_ids]
-          @genre.movie_ids = params[:genre][:movie_ids]
-        else
-          @genre.movies.clear
-          @genre.save
-        end
+        update_movies
 
         flash[:message] = "Genre Updated."
       end
@@ -121,5 +111,17 @@ class GenreController < ApplicationController
       redirect to '/genres'
   end
 
+  helpers do
+
+    def update_movies
+      if !!defined?params[:genre][:movie_ids] #if the movie_ids exist then update
+        @genre.movie_ids = params[:genre][:movie_ids]
+      else
+        @genre.movies.clear
+        @genre.save
+      end
+    end
+
+  end
 
 end
