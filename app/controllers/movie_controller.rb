@@ -90,7 +90,7 @@ class MovieController < ApplicationController
       if !!defined?params[:movie][:genre_ids]
         @movie.genre_ids = params[:movie][:genre_ids]
       end
-binding.pry
+
       if !params[:genre][:name].empty? && !get_user_by_session.genres.find_by_slug(slug(params[:genre][:name]))
 
         @genre = Genre.create(name: sanitize_input(params[:genre][:name]))

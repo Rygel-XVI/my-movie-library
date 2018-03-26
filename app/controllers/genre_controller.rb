@@ -69,21 +69,39 @@ class GenreController < ApplicationController
   end
 
   patch '/genres/:slug/edit_genre' do
+    # get genre this edit is associated with
     @genre = get_user_by_session.genres.find_by_slug(params[:slug])
+
+    # if this genre exists that the slug is associated with
     if @genre
+      # if the genre slug exists and it matches current genre we are editing then update
       if !@user.genres.find_by_slug(slug(params[:name]))
 
-        if !params[:name].empty?
+        if !params[:name].empty?  #if name field isn't empty update
           @genre.update(name: sanitize_input(params[:name]))
         end
 
-        if !!defined?params[:genre][:movie_ids]
+        if !!defined?params[:genre][:movie_ids] #if the movie_ids exist then update
           @genre.movie_ids = params[:genre][:movie_ids]
+        else
+          @genre.movies.clear
+          @genre.save
         end
 
         flash[:message] = "Genre Updated"
-      else
-        flash[:message] = "#{@genre.name} already exists."
+
+        ##if the current genre.slug matches a slug owned by the user then update
+      elsif @user.genres.find_by_slug(slug(params[:name])).slug == @genre.slug
+        @genre.update(name: sanitize_input(params[:name]))
+
+        if !!defined?params[:genre][:movie_ids]
+          @genre.movie_ids = params[:genre][:movie_ids]
+        else
+          @genre.movies.clear
+          @genre.save
+        end
+
+        flash[:message] = "Genre Updated."
       end
       redirect to "/genres/#{@genre.slug}"
     else
@@ -102,5 +120,6 @@ class GenreController < ApplicationController
       end
       redirect to '/genres'
   end
+
 
 end
